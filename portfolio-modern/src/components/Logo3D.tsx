@@ -1,195 +1,191 @@
 'use client';
 
-import { useRef, useState, useEffect } from 'react';
-import { Canvas, useFrame, useLoader } from '@react-three/fiber';
-import { OrbitControls, useGLTF, PerformanceMonitor } from '@react-three/drei';
+import { Canvas, useFrame } from '@react-three/fiber';
+import { useGLTF, OrbitControls } from '@react-three/drei';
+import { useRef, Suspense, useState, useEffect, useMemo } from 'react';
 import * as THREE from 'three';
 
-// Shader material for particle system
+// Simple particle system component (inside Canvas)
 function ParticleSystem() {
   const meshRef = useRef<THREE.Points>(null);
-  const [uniforms, setUniforms] = useState({
-    time: { value: 0 },
-    resolution: { value: new THREE.Vector2(window.innerWidth, window.innerHeight) },
-    mouse: { value: new THREE.Vector2(0, 0) },
-    viewport: { value: new THREE.Vector2(window.innerWidth, window.innerHeight) },
-    pointTexture: { value: null },
-    meshColor: { value: new THREE.Color(0x000000) },
-  });
-
-  // Vertex shader
-  const vertexShader = `
-    uniform float time;
-    uniform vec2 resolution;
-    uniform vec2 mouse;
-    uniform vec2 viewport;
-    uniform sampler2D pointTexture;
-    uniform vec3 meshColor;
+  const [isLoaded, setIsLoaded] = useState(false);
+  
+  // Load GLTF model with error handling
+  let gltf;
+  try {
+    gltf = useGLTF('/models/logo.glb');
+  } catch (error) {
+    console.error('Error loading GLB model:', error);
+    return null;
+  }
+  
+  // Extract positions from model - only once
+  const positions = useMemo(() => {
+    if (!gltf.scene) return null;
     
-    varying vec2 vUv;
-    varying vec3 vColor;
+    const posArray: number[] = [];
+    let meshCount = 0;
     
-    void main() {
-      vUv = uv;
-      vColor = meshColor;
-      
-      vec3 pos = position;
-      
-      // Add some subtle animation
-      pos.y += sin(time * 0.5 + pos.x * 0.1) * 0.1;
-      pos.x += cos(time * 0.3 + pos.z * 0.1) * 0.05;
-      
-      gl_Position = projectionMatrix * modelViewMatrix * vec4(pos, 1.0);
-      gl_PointSize = 2.0;
-    }
-  `;
-
-  // Fragment shader
-  const fragmentShader = `
-    uniform float time;
-    uniform vec2 resolution;
-    uniform vec2 mouse;
-    uniform vec2 viewport;
-    uniform sampler2D pointTexture;
-    uniform vec3 meshColor;
-    
-    varying vec2 vUv;
-    varying vec3 vColor;
-    
-    void main() {
-      vec2 center = gl_PointCoord - vec2(0.5);
-      float dist = length(center);
-      
-      if (dist > 0.5) discard;
-      
-      float alpha = 1.0 - smoothstep(0.0, 0.5, dist);
-      alpha *= 0.8;
-      
-      gl_FragColor = vec4(vColor, alpha);
-    }
-  `;
-
-  // Load the GLB model
-  const { scene } = useGLTF('/models/logo.glb');
-
-  // Extract position data from the model
-  useEffect(() => {
-    if (scene) {
-      const positions: number[] = [];
-      scene.traverse((child) => {
-        if (child instanceof THREE.Mesh) {
-          const geometry = child.geometry;
-          if (geometry.attributes.position) {
-            const positionArray = geometry.attributes.position.array;
-            for (let i = 0; i < positionArray.length; i += 3) {
-              positions.push(positionArray[i], positionArray[i + 1], positionArray[i + 2]);
-            }
+    gltf.scene.traverse((child) => {
+      if ((child as THREE.Mesh).isMesh) {
+        meshCount++;
+        const mesh = child as THREE.Mesh;
+        const pos = mesh.geometry.attributes.position;
+        if (pos && pos.array) {
+          for (let i = 0; i < pos.array.length; i++) {
+            posArray.push(pos.array[i]);
           }
         }
-      });
-
-      if (positions.length > 0 && meshRef.current) {
-        const geometry = new THREE.BufferGeometry();
-        geometry.setAttribute('position', new THREE.Float32BufferAttribute(positions, 3));
-        meshRef.current.geometry = geometry;
       }
+    });
+    
+    console.log('Found', meshCount, 'meshes');
+    console.log('Extracted positions:', posArray.length);
+    console.log('First few positions:', posArray.slice(0, 9));
+    
+    if (posArray.length === 0) {
+      console.warn('No positions found in GLB model');
+      return null;
     }
-  }, [scene]);
-
-  // Animation loop
+    
+    return new Float32Array(posArray);
+  }, [gltf]);
+  
+  // Mark as loaded when positions are ready
+  useEffect(() => {
+    if (positions) {
+      setIsLoaded(true);
+    }
+  }, [positions]);
+  
+  // Animation frame
   useFrame((state) => {
     if (meshRef.current) {
-      uniforms.time.value = state.clock.elapsedTime;
-      
-      // Update mouse position
-      uniforms.mouse.value.set(
-        (state.mouse.x * state.viewport.width) / 2,
-        (state.mouse.y * state.viewport.height) / 2
-      );
-      
-      // Update resolution
-      uniforms.resolution.value.set(state.viewport.width, state.viewport.height);
-      uniforms.viewport.value.set(state.viewport.width, state.viewport.height);
+      meshRef.current.rotation.y = state.clock.elapsedTime * 0.5;
     }
   });
 
-  // Handle mouse movement
-  const handleMouseMove = (event: MouseEvent) => {
-    const rect = event.target as HTMLElement;
-    const x = (event.clientX - rect.offsetLeft) / rect.offsetWidth;
-    const y = (event.clientY - rect.offsetTop) / rect.offsetHeight;
-    uniforms.mouse.value.set(x * 2 - 1, -(y * 2 - 1));
-  };
+  // Create geometry - only once when positions are ready
+  const geometry = useMemo(() => {
+    if (!positions) return null;
+    
+    const geo = new THREE.BufferGeometry();
+    geo.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+    geo.computeBoundingBox();
+    console.log('Geometry created with', positions.length / 3, 'points');
+    console.log('Bounding box:', geo.boundingBox);
+    return geo;
+  }, [positions]);
 
-  useEffect(() => {
-    const canvas = document.querySelector('canvas');
-    if (canvas) {
-      canvas.addEventListener('mousemove', handleMouseMove);
-      return () => canvas.removeEventListener('mousemove', handleMouseMove);
-    }
-  }, []);
+  if (!geometry || !isLoaded) {
+    // Fallback: create a simple particle system
+    const fallbackGeometry = useMemo(() => {
+      const geo = new THREE.BufferGeometry();
+      const positions = new Float32Array(3000); // 1000 points
+      for (let i = 0; i < 1000; i++) {
+        positions[i * 3] = (Math.random() - 0.5) * 100;
+        positions[i * 3 + 1] = (Math.random() - 0.5) * 100;
+        positions[i * 3 + 2] = (Math.random() - 0.5) * 100;
+      }
+      geo.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+      console.log('Using fallback particle system');
+      return geo;
+    }, []);
+
+    return (
+      <points 
+        ref={meshRef} 
+        position={[0, 0, 0]} 
+        rotation={[0, 0, 0]}
+        geometry={fallbackGeometry}
+      >
+        <pointsMaterial
+          color="#000000"
+          size={5.0}
+          transparent
+          opacity={0.8}
+          sizeAttenuation={false}
+        />
+      </points>
+    );
+  }
 
   return (
-    <points ref={meshRef}>
-      <shaderMaterial
-        vertexShader={vertexShader}
-        fragmentShader={fragmentShader}
-        uniforms={uniforms}
+    <points 
+      ref={meshRef} 
+      position={[0, -554.8, 0]} 
+      rotation={[-Math.PI * 0.5, 0, 0]}
+      geometry={geometry}
+    >
+      <pointsMaterial
+        color="#000000"
+        size={10.0}
         transparent
-        depthWrite={false}
-        blending={THREE.AdditiveBlending}
+        opacity={0.9}
+        sizeAttenuation={false}
       />
     </points>
   );
 }
 
-// Fallback component for mobile or when WebGL is not available
-function LogoFallback() {
-  return (
-    <div className="w-full h-full flex items-center justify-center">
-      <div className="w-24 h-24 bg-black rounded-full flex items-center justify-center">
-        <span className="text-white text-2xl font-bold">TM</span>
-      </div>
-    </div>
-  );
-}
-
+// Main component
 export default function Logo3D() {
-  const [isWebGLSupported, setIsWebGLSupported] = useState(true);
+  const [isWebGLSupported, setIsWebGLSupported] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     // Check WebGL support
     const canvas = document.createElement('canvas');
     const gl = canvas.getContext('webgl') || canvas.getContext('experimental-webgl');
     setIsWebGLSupported(!!gl);
+    setIsLoading(false);
   }, []);
 
+  if (isLoading) {
+    return (
+      <div className="w-full h-full flex items-center justify-center bg-gray-100">
+        <div className="text-gray-600">Loading 3D Logo...</div>
+      </div>
+    );
+  }
+
   if (!isWebGLSupported) {
-    return <LogoFallback />;
+    return (
+      <div className="w-full h-full flex items-center justify-center bg-gray-100">
+        <div className="text-gray-600">WebGL not supported</div>
+      </div>
+    );
   }
 
   return (
-    <div className="w-full h-full">
-      <Canvas
-        camera={{ position: [0, 0, 5], fov: 50 }}
-        style={{ width: '100%', height: '100%' }}
-      >
-        <PerformanceMonitor>
-          <ambientLight intensity={0.5} />
-          <directionalLight position={[10, 10, 5]} intensity={1} />
-          
-          <ParticleSystem />
-          
-          <OrbitControls
-            enableZoom={false}
-            enablePan={false}
-            autoRotate
-            autoRotateSpeed={0.5}
-            enableDamping
-            dampingFactor={0.05}
-          />
-        </PerformanceMonitor>
-      </Canvas>
-    </div>
+    <Canvas
+      camera={{ position: [0, 10, 50], fov: 18 }}
+      gl={{ antialias: true, alpha: true }}
+      onCreated={({ gl, camera }) => {
+        console.log('Canvas created, camera position:', camera.position);
+        // Handle WebGL context loss
+        gl.domElement.addEventListener('webglcontextlost', (event) => {
+          event.preventDefault();
+          console.warn('WebGL context lost, attempting to restore...');
+        });
+        gl.domElement.addEventListener('webglcontextrestored', () => {
+          console.log('WebGL context restored');
+        });
+      }}
+    >
+      <Suspense fallback={null}>
+        <ambientLight intensity={2} />
+        <directionalLight position={[10, -565, 10]} intensity={3} />
+        <ParticleSystem />
+        <OrbitControls
+          autoRotate
+          autoRotateSpeed={2.0}
+          enableZoom={false}
+          enablePan={false}
+          maxPolarAngle={Math.PI * 0.8}
+          minPolarAngle={Math.PI * 0.2}
+        />
+      </Suspense>
+    </Canvas>
   );
 }

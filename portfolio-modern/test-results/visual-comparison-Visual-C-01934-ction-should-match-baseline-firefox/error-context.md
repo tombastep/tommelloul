@@ -1,0 +1,222 @@
+# Page snapshot
+
+```yaml
+- generic [active] [ref=e1]:
+  - generic [ref=e2]:
+    - generic [ref=e3]:
+      - generic [ref=e10]:
+        - heading "Tom Melloul" [level=1] [ref=e11]
+        - heading "Architect & Creative Coder" [level=3] [ref=e12]
+        - generic [ref=e13]:
+          - link "About" [ref=e14] [cursor=pointer]:
+            - /url: "#about"
+          - link "View Work" [ref=e15] [cursor=pointer]:
+            - /url: "#animism"
+      - link [ref=e16] [cursor=pointer]:
+        - /url: "#about"
+        - img [ref=e17]
+    - generic [ref=e19]:
+      - generic [ref=e23]:
+        - generic [ref=e24]:
+          - heading "ANIMISM" [level=1] [ref=e25]
+          - heading "Algorithmic Architecture" [level=2] [ref=e26]
+          - paragraph [ref=e27]: A computational approach to architectural design using algorithmic processes.
+          - generic [ref=e28]:
+            - generic [ref=e29]: "2023"
+            - generic [ref=e30]: •
+            - generic [ref=e31]: Tel Aviv, Israel
+            - generic [ref=e32]: •
+            - generic [ref=e33]: Academic Research
+        - generic [ref=e34]:
+          - button [ref=e35]:
+            - img [ref=e36]
+          - button [ref=e38]:
+            - img [ref=e39]
+      - generic [ref=e41]:
+        - img "ANIMISM thumbnail 1" [ref=e43] [cursor=pointer]
+        - img "ANIMISM thumbnail 2" [ref=e45] [cursor=pointer]
+        - img "ANIMISM thumbnail 3" [ref=e47] [cursor=pointer]
+        - img "ANIMISM thumbnail 4" [ref=e49] [cursor=pointer]
+        - img "ANIMISM thumbnail 5" [ref=e51] [cursor=pointer]
+        - img "ANIMISM thumbnail 6" [ref=e53] [cursor=pointer]
+        - generic [ref=e55] [cursor=pointer]: "+1"
+    - generic [ref=e56]:
+      - generic [ref=e60]:
+        - generic [ref=e61]:
+          - heading "WENDY" [level=1] [ref=e62]
+          - heading "Urban Intervention" [level=2] [ref=e63]
+          - paragraph [ref=e64]: A temporary urban intervention exploring public space and community interaction.
+          - generic [ref=e65]:
+            - generic [ref=e66]: "2022"
+            - generic [ref=e67]: •
+            - generic [ref=e68]: Tel Aviv, Israel
+            - generic [ref=e69]: •
+            - generic [ref=e70]: Urban Design
+        - generic [ref=e71]:
+          - button [ref=e72]:
+            - img [ref=e73]
+          - button [ref=e75]:
+            - img [ref=e76]
+      - generic [ref=e78]:
+        - img "WENDY thumbnail 1" [ref=e80] [cursor=pointer]
+        - img "WENDY thumbnail 2" [ref=e82] [cursor=pointer]
+        - img "WENDY thumbnail 3" [ref=e84] [cursor=pointer]
+    - generic [ref=e85]:
+      - generic [ref=e89]:
+        - generic [ref=e90]:
+          - heading "EVO" [level=1] [ref=e91]
+          - heading "Evolutionary Housing" [level=2] [ref=e92]
+          - paragraph [ref=e93]: A housing complex designed to evolve and adapt over time.
+          - generic [ref=e94]:
+            - generic [ref=e95]: "2021"
+            - generic [ref=e96]: •
+            - generic [ref=e97]: Tel Aviv, Israel
+            - generic [ref=e98]: •
+            - generic [ref=e99]: Residential Architecture
+        - generic [ref=e100]:
+          - button [ref=e101]:
+            - img [ref=e102]
+          - button [ref=e104]:
+            - img [ref=e105]
+      - generic [ref=e107]:
+        - img "EVO thumbnail 1" [ref=e109] [cursor=pointer]
+        - img "EVO thumbnail 2" [ref=e111] [cursor=pointer]
+        - img "EVO thumbnail 3" [ref=e113] [cursor=pointer]
+        - img "EVO thumbnail 4" [ref=e115] [cursor=pointer]
+        - img "EVO thumbnail 5" [ref=e117] [cursor=pointer]
+        - img "EVO thumbnail 6" [ref=e119] [cursor=pointer]
+        - generic [ref=e121] [cursor=pointer]: "+9"
+    - generic [ref=e126]:
+      - generic [ref=e127]:
+        - heading "EAAA" [level=1] [ref=e128]
+        - heading "Educational Architecture" [level=2] [ref=e129]
+        - paragraph [ref=e130]: A new educational complex designed for collaborative learning.
+        - generic [ref=e131]:
+          - generic [ref=e132]: "2020"
+          - generic [ref=e133]: •
+          - generic [ref=e134]: Tel Aviv, Israel
+          - generic [ref=e135]: •
+          - generic [ref=e136]: Educational Architecture
+      - generic [ref=e137]:
+        - button [ref=e138]:
+          - img [ref=e139]
+        - button [ref=e141]:
+          - img [ref=e142]
+    - generic [ref=e151]:
+      - generic [ref=e152]:
+        - heading "MIST" [level=1] [ref=e153]
+        - heading "Environmental Architecture" [level=2] [ref=e154]
+        - paragraph [ref=e155]: A building that responds to environmental conditions through adaptive systems.
+        - generic [ref=e156]:
+          - generic [ref=e157]: "2019"
+          - generic [ref=e158]: •
+          - generic [ref=e159]: Tel Aviv, Israel
+          - generic [ref=e160]: •
+          - generic [ref=e161]: Environmental Architecture
+      - generic [ref=e162]:
+        - button [ref=e163]:
+          - img [ref=e164]
+        - button [ref=e166]:
+          - img [ref=e167]
+    - generic [ref=e172]:
+      - generic [ref=e176]:
+        - generic [ref=e177]:
+          - heading "UMAGUTI" [level=1] [ref=e178]
+          - heading "Cultural Center" [level=2] [ref=e179]
+          - paragraph [ref=e180]: A cultural center celebrating local heritage and contemporary arts.
+          - generic [ref=e181]:
+            - generic [ref=e182]: "2018"
+            - generic [ref=e183]: •
+            - generic [ref=e184]: Tel Aviv, Israel
+            - generic [ref=e185]: •
+            - generic [ref=e186]: Cultural Architecture
+        - generic [ref=e187]:
+          - button [ref=e188]:
+            - img [ref=e189]
+          - button [ref=e191]:
+            - img [ref=e192]
+      - generic [ref=e194]:
+        - img "UMAGUTI thumbnail 1" [ref=e196] [cursor=pointer]
+        - img "UMAGUTI thumbnail 2" [ref=e198] [cursor=pointer]
+        - img "UMAGUTI thumbnail 3" [ref=e200] [cursor=pointer]
+        - img "UMAGUTI thumbnail 4" [ref=e202] [cursor=pointer]
+        - img "UMAGUTI thumbnail 5" [ref=e204] [cursor=pointer]
+        - img "UMAGUTI thumbnail 6" [ref=e206] [cursor=pointer]
+        - generic [ref=e208] [cursor=pointer]: "+15"
+    - generic [ref=e213]:
+      - generic [ref=e214]:
+        - heading "CLEAR STUDIO" [level=1] [ref=e215]
+        - heading "Creative Workspace" [level=2] [ref=e216]
+        - paragraph [ref=e217]: A flexible workspace designed for creative professionals.
+        - generic [ref=e218]:
+          - generic [ref=e219]: "2017"
+          - generic [ref=e220]: •
+          - generic [ref=e221]: Tel Aviv, Israel
+          - generic [ref=e222]: •
+          - generic [ref=e223]: Commercial Architecture
+      - generic [ref=e224]:
+        - button [ref=e225]:
+          - img [ref=e226]
+        - button [ref=e228]:
+          - img [ref=e229]
+    - generic [ref=e238]:
+      - generic [ref=e239]:
+        - heading "HS BUILDING" [level=1] [ref=e240]
+        - heading "Mixed-Use Development" [level=2] [ref=e241]
+        - paragraph [ref=e242]: A mixed-use building combining residential and commercial functions.
+        - generic [ref=e243]:
+          - generic [ref=e244]: "2016"
+          - generic [ref=e245]: •
+          - generic [ref=e246]: Tel Aviv, Israel
+          - generic [ref=e247]: •
+          - generic [ref=e248]: Mixed-Use Architecture
+      - generic [ref=e249]:
+        - button [ref=e250]:
+          - img [ref=e251]
+        - button [ref=e253]:
+          - img [ref=e254]
+    - generic [ref=e263]:
+      - generic [ref=e264]:
+        - heading "NEOT SHAMIR" [level=1] [ref=e265]
+        - heading "Educational Campus" [level=2] [ref=e266]
+        - paragraph [ref=e267]: A new educational campus designed for collaborative learning.
+        - generic [ref=e268]:
+          - generic [ref=e269]: "2015"
+          - generic [ref=e270]: •
+          - generic [ref=e271]: Neot Shamir, Israel
+          - generic [ref=e272]: •
+          - generic [ref=e273]: Educational Architecture
+      - generic [ref=e274]:
+        - button [ref=e275]:
+          - img [ref=e276]
+        - button [ref=e278]:
+          - img [ref=e279]
+    - generic [ref=e285]:
+      - heading "About" [level=1] [ref=e287]
+      - generic [ref=e292]:
+        - button "BIO +" [ref=e294]:
+          - heading "BIO" [level=3] [ref=e295]
+          - generic [ref=e296]: +
+        - button "ACADEMIC +" [ref=e298]:
+          - heading "ACADEMIC" [level=3] [ref=e299]
+          - generic [ref=e300]: +
+        - button "PRACTICAL +" [ref=e302]:
+          - heading "PRACTICAL" [level=3] [ref=e303]
+          - generic [ref=e304]: +
+        - button "DETAILS +" [ref=e306]:
+          - heading "DETAILS" [level=3] [ref=e307]
+          - generic [ref=e308]: +
+        - generic [ref=e309]:
+          - link "Email" [ref=e310] [cursor=pointer]:
+            - /url: mailto:tom@tommelloul.com
+            - img [ref=e311]
+          - link "LinkedIn" [ref=e313] [cursor=pointer]:
+            - /url: https://linkedin.com/in/tommelloul
+            - img [ref=e314]
+          - link "GitHub" [ref=e316] [cursor=pointer]:
+            - /url: https://github.com/tommelloul
+            - img [ref=e317]
+  - button "Open Next.js Dev Tools" [ref=e324] [cursor=pointer]:
+    - img [ref=e325]
+  - alert [ref=e329]: Tom Melloul
+```

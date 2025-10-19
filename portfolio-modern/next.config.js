@@ -20,6 +20,13 @@ const nextConfig = {
         },
       },
     });
+    
+    // Handle shader files
+    config.module.rules.push({
+      test: /\.(vert|frag)$/,
+      type: 'asset/source',
+    });
+    
     return config;
   },
 };

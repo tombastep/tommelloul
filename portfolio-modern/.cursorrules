@@ -1,0 +1,138 @@
+# Cursor AI Rules for Portfolio Modernization Project
+
+## 1. Documentation & Context
+
+- **ALWAYS** read `DOCUMENTATION.md` at the start of each session to understand project context, architecture, and current state
+- **ALWAYS** reference `IMPLEMENTATION_PLAN.md` for current tasks, progress, and next steps
+- **ALWAYS** update both documentation files when making architectural changes or completing major tasks
+- **ALWAYS** check the current branch and commit status before making changes
+- **ALWAYS** reference the original site (tommelloul.com) for visual and behavioral reference
+
+## 2. Visual Parity Requirements
+
+- **MAINTAIN** 100% visual parity with tommelloul.com at all times
+- **RUN** visual comparison tests after any major changes using `npm run test:visual`
+- **REFERENCE** baseline screenshots in `tests/baseline/` when making layout changes
+- **NEVER** introduce visual regressions - if tests fail, fix before proceeding
+- **VERIFY** responsive behavior at all breakpoints (375px, 768px, 1920px)
+- **MATCH** exact typography, spacing, colors, and animations from original site
+
+## 3. Code Standards & Architecture
+
+- **USE** TypeScript strict mode for all new code
+- **FOLLOW** existing component patterns in `src/components/` directory
+- **USE** Framer Motion for all animations (no jQuery or vanilla JS animations)
+- **USE** Tailwind CSS for styling with custom CSS only when necessary
+- **KEEP** components modular, reusable, and properly typed
+- **MAINTAIN** consistent file structure and naming conventions
+- **USE** forwardRef when components need refs for scroll detection or video control
+
+## 4. Testing Requirements
+
+- **RUN** `npm run test` before committing any changes
+- **UPDATE** tests when changing functionality or adding new features
+- **ADD** visual comparison tests for any new sections or major layout changes
+- **VERIFY** all interactions work identically to original site
+- **TEST** responsive behavior at all breakpoints
+- **ENSURE** all assets load without 404 errors
+
+## 5. Asset Management
+
+- **STORE** all assets in `/public` directory with proper organization
+- **USE** relative paths from `/public` in all code (e.g., `/works/ANIMISM/Render.jpg`)
+- **OPTIMIZE** images to WebP/AVIF formats when possible
+- **INCLUDE** fallback formats for videos (WebM + MP4)
+- **VERIFY** all asset paths are correct and files exist
+- **MAINTAIN** consistent naming conventions for assets
+
+## 6. Component Development Patterns
+
+- **USE** forwardRef when components need refs (especially for scroll detection)
+- **IMPLEMENT** proper TypeScript interfaces for all props and data structures
+- **FOLLOW** existing data structure patterns in `src/lib/data.ts`
+- **USE** useInView for scroll-triggered animations and video autoplay
+- **MAINTAIN** consistent component structure and naming
+- **INCLUDE** proper error handling and loading states
+
+## 7. Video Handling Standards
+
+- **IMPLEMENT** autoplay with useInView detection for background videos
+- **ALWAYS** include muted, loop, and playsInline attributes
+- **PROVIDE** poster images for all videos
+- **INCLUDE** video ref for direct play/pause control
+- **HANDLE** autoplay failures gracefully with console.error logging
+- **SUPPORT** both WebM and MP4 formats with proper fallbacks
+
+## 8. Plan & Progress Updates
+
+- **MARK** completed tasks in `IMPLEMENTATION_PLAN.md` with completion date and commit hash
+- **ADD** new tasks as they are identified during development
+- **DOCUMENT** all architectural decisions in the Decision Log section
+- **UPDATE** Known Issues section when bugs are found or resolved
+- **MAINTAIN** accurate progress tracking and time estimates
+- **REFERENCE** specific files and line numbers when documenting changes
+
+## 9. Commit Standards
+
+- **USE** conventional commit format: `feat:`, `fix:`, `docs:`, `test:`, `refactor:`
+- **REFERENCE** relevant files and components in commit messages
+- **UPDATE** plan markdown files before committing
+- **KEEP** commits focused and atomic (one logical change per commit)
+- **INCLUDE** brief description of what was changed and why
+- **VERIFY** all tests pass before committing
+
+## 10. Performance & Optimization
+
+- **LAZY LOAD** images and videos to improve initial page load
+- **USE** Next.js Image component when possible for automatic optimization
+- **MINIMIZE** bundle size by avoiding unnecessary dependencies
+- **OPTIMIZE** animations for 60fps performance
+- **IMPLEMENT** proper loading states and error boundaries
+- **MONITOR** bundle size with `npm run analyze`
+
+## 11. Original Site Reference
+
+- **REFERENCE** original site files in `/Users/tomba/Documents/tommelloul/` when implementing features
+- **STUDY** original CSS in `assets/css/main.css` for exact styling
+- **ANALYZE** original JavaScript in `assets/js/` for behavior patterns
+- **MATCH** exact layout structure from `index.html`
+- **PRESERVE** all original functionality and interactions
+
+## 12. Error Handling & Debugging
+
+- **INCLUDE** proper error handling for all async operations
+- **LOG** errors to console with descriptive messages
+- **HANDLE** video autoplay failures gracefully
+- **PROVIDE** fallbacks for missing assets or failed loads
+- **DEBUG** issues systematically using browser dev tools
+- **VERIFY** fixes work across all browsers and devices
+
+## 13. Responsive Design
+
+- **TEST** all breakpoints: mobile (375px), tablet (768px), desktop (1920px)
+- **MATCH** original responsive behavior exactly
+- **USE** Tailwind responsive classes consistently
+- **VERIFY** touch interactions work on mobile devices
+- **ENSURE** text remains readable at all screen sizes
+
+## 14. Accessibility
+
+- **INCLUDE** proper ARIA labels and roles
+- **ENSURE** keyboard navigation works correctly
+- **PROVIDE** alt text for all images
+- **MAINTAIN** proper focus management
+- **SUPPORT** screen readers and assistive technologies
+- **FOLLOW** WCAG guidelines for accessibility
+
+## 15. Code Quality
+
+- **WRITE** clean, readable, and maintainable code
+- **USE** meaningful variable and function names
+- **INCLUDE** comments for complex logic
+- **AVOID** code duplication
+- **FOLLOW** React best practices and hooks patterns
+- **KEEP** functions small and focused on single responsibilities
+
+---
+
+*These rules ensure consistent development practices and maintain the high quality standards required for this portfolio modernization project. Always prioritize visual parity, code quality, and user experience.*

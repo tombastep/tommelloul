@@ -6,9 +6,10 @@ import { projects } from '@/lib/data';
 
 interface FullPageProps {
   children: React.ReactNode;
+  onSectionChange?: (isFirstSection: boolean) => void;
 }
 
-export default function FullPage({ children }: FullPageProps) {
+export default function FullPage({ children, onSectionChange }: FullPageProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const [currentSection, setCurrentSection] = useState(0);
   const [isScrolling, setIsScrolling] = useState(false);
@@ -22,27 +23,38 @@ export default function FullPage({ children }: FullPageProps) {
   // Calculate which section is currently in view
   useEffect(() => {
     const handleScroll = () => {
-      if (isScrolling) return;
-
+      // Remove the isScrolling check - detect sections immediately when scrolling starts
       const sections = containerRef.current?.children;
       if (!sections) return;
 
       const scrollTop = window.scrollY;
       const windowHeight = window.innerHeight;
 
+      // Find the section that's most visible in the viewport
+      let currentSectionIndex = 0;
+      let maxVisibleArea = 0;
+      
       for (let i = 0; i < sections.length; i++) {
         const section = sections[i] as HTMLElement;
         const sectionTop = section.offsetTop;
         const sectionHeight = section.offsetHeight;
-
-        if (
-          scrollTop >= sectionTop - windowHeight / 2 &&
-          scrollTop < sectionTop + sectionHeight - windowHeight / 2
-        ) {
-          setCurrentSection(i);
-          break;
+        const sectionBottom = sectionTop + sectionHeight;
+        
+        // Calculate how much of this section is visible
+        const visibleTop = Math.max(scrollTop, sectionTop);
+        const visibleBottom = Math.min(scrollTop + windowHeight, sectionBottom);
+        const visibleHeight = Math.max(0, visibleBottom - visibleTop);
+        const visibleArea = visibleHeight * (visibleHeight / sectionHeight);
+        
+        // The section with the most visible area is the current one
+        if (visibleArea > maxVisibleArea) {
+          maxVisibleArea = visibleArea;
+          currentSectionIndex = i;
         }
       }
+      
+      setCurrentSection(currentSectionIndex);
+      onSectionChange?.(currentSectionIndex === 0);
     };
 
     // Initial check
@@ -50,7 +62,7 @@ export default function FullPage({ children }: FullPageProps) {
 
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
-  }, [isScrolling]);
+  }, [isScrolling, onSectionChange]);
 
   // Handle smooth scrolling to sections with easing
   const scrollToSection = (index: number) => {
